@@ -10,7 +10,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define BLINK_DELAY_MS 500
+#define BLINK_DELAY_MS 2000
 #define LED_COUNT 4
 const int led[LED_COUNT] = {2, 3, 4, 5};
 
@@ -22,10 +22,10 @@ int main(void){
     // turn the LEDs on
     for(int i=0; i<LED_COUNT; i++)
       PORTB = PORTB | (1<<led[i]);
-      _delay_ms(BLINK_DELAY_MS);
+    _delay_ms(BLINK_DELAY_MS);
     // turn off the LEDs
     for(int i=0; i<LED_COUNT; i++)
       PORTB = PORTB & ~(1<<led[i]);
-      _delay_ms(BLINK_DELAY_MS);
+    _delay_ms(BLINK_DELAY_MS);
   }
 }
