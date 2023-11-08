@@ -10,28 +10,40 @@
  */
 
 #include <avr/io.h>
-#include <avr/interrupt.h>
 #include <util/delay.h>
 
 #define uc unsigned char
-#define DEBOUNCE_DELAY_MS 100
+#define DEBOUNCE_DELAY_MS 300
 
-int main(){
-  // Set 0-5 pins in PORTB for output
-  DDRB = DDRB|0b00111111; 
+int main() {
+  // Set the first 6 pins in PORTB for output (6 LSBs for LEDs)
+  DDRB = 0b00111111;
   // Set pin 7 in PORTD for input (push button)
-  DDRD = DDRD&~(1<<7);
-  uc counter=0, btn_state=0;
-  while(1){
-    if (!btn_state && (PIND>>7)&1){ 
+  DDRD &= ~(1 << 7);
+
+  uc counter = 0;
+  uc btn_state = 0;
+
+  while (1) {
+    uc current_btn_state = (PIND >> 7) & 1;
+
+    if (!btn_state && current_btn_state) {
+      // Implement debounce: Wait for a short delay before counting another press
+      _delay_ms(DEBOUNCE_DELAY_MS);
+
       // Increment counter accounting for overflow
-      if(counter == 0b00111111) counter = 0;
-      else counter++;
+      if (counter == 0b00111111) {
+        counter = 0;
+      } else {
+        counter++;
+      }
+
       // Update LEDs
       PORTB = counter;
     }
-    btn_state = (PIND>>7)&1;
-    // Delay next iteration to avoid debounce issues
-    _delay_ms(DEBOUNCE_DELAY_MS);
+
+    btn_state = current_btn_state;
   }
 }
+
+
