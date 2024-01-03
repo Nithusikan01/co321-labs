@@ -9,6 +9,7 @@
 
 ### Above combination will ignore all files without extension ###
 
-*.hex
-*.zip
-*.pdf
+**.hex
+**.zip
+**.pdf
+**.mp4
