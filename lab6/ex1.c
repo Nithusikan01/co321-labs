@@ -23,7 +23,7 @@ void usart_send(unsigned char data){
     while(!(UCSR0A & (1 << UDRE0) ));
 
     /* Put the data into buffer, sends the  data */
-    UDR0 = data
+    UDR0 = data;
 }
 
 unsigned char usart_receive(){
